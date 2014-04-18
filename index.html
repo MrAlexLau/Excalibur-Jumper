@@ -1,0 +1,50 @@
+<html>
+<head></head>
+<body>
+<!-- Other stuff -->
+
+   <script type="text/javascript" src="bower_components/excalibur/dist/Excalibur.js"></script>
+   <script type="text/javascript">
+      var game = new ex.Engine();
+
+      var actor = new ex.Actor(400, 400, 100, 100, ex.Color.Red);
+      var jumpTimerStart, jumpAmount;
+
+      actor.addEventListener('keydown', function(evt){
+        if (evt.key == ex.InputKey.Space){
+          var d = new Date();
+          jumpTimerStart = d.getTime();
+        }
+      });
+
+      actor.addEventListener('keyup', function(evt){
+        if (evt.key == ex.InputKey.Space){
+          var d = new Date();
+          var timeJumping = d.getTime() - jumpTimerStart;
+          jumpAmount = timeJumping / 7;
+          console.log(timeJumping)
+        }
+      });
+
+
+      game.addEventListener('update', function(evt){
+        if(jumpAmount > 0) {
+          actor.y -= 10;
+          jumpAmount -= 10;
+        }
+        else if (actor.y < 400){
+          actor.y += 3;
+        }
+      });
+
+      ex.KeyDown()
+
+
+      // Add an actor to the current scene
+      game.addChild(actor);
+
+      // Start the game
+      game.start();
+   </script>
+</body>
+</html>
