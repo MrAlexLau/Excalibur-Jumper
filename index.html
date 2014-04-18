@@ -101,7 +101,7 @@ How to play:
       }
 
       function generateGoal() {
-        var goal = new Goal(randInt(0, game.width - JUMPER_WIDTH), randInt(0, ground.y - 10), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
+        var goal = new Goal(randInt(0, game.width - JUMPER_WIDTH), randInt(20, ground.y - 20), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
         game.addChild(goal);
       }
 
