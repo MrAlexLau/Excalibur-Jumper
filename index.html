@@ -1,12 +1,17 @@
 <html>
 <head></head>
 <body>
-<!-- Other stuff -->
+How to play:
+  <ul>
+    <li>Press Space to jump.</li>
+    <li>The longer you hold down space, the higher you jump.</li>
+  <ul>
 
    <script type="text/javascript" src="bower_components/excalibur/dist/Excalibur.js"></script>
    <script type="text/javascript">
       var game = new ex.Engine(320, 480);
       game.backgroundColor = ex.Color.Black;
+      var Goal = ex.Actor.extend({});
 
       var JUMPER_HEIGHT = 20;
       var JUMPER_WIDTH = 20;
@@ -34,12 +39,10 @@
       }
 
       jumper.isOnGround = function(){
-        return (jumper.y + 17 === ground.y);
+        return (jumper.y + 20 === ground.y);
       }
 
       jumper.addEventListener('collision', function(evt){
-        // console.log('collision')
-        // console.log(evt)
         if(evt.other instanceof Goal){
           score += 1;
           evt.other.kill();
@@ -60,7 +63,8 @@
       });
 
       jumper.addEventListener('keydown', function(evt){
-        if (evt.key == ex.InputKey.Space && jumper.isOnGround()){
+        // if (evt.key == ex.InputKey.Space && jumper.isOnGround()){
+        if (evt.key == ex.InputKey.Space){
           var d = new Date();
           jumpTimerStart = d.getTime();
           spacePushed = true;
@@ -68,13 +72,13 @@
       });
 
       jumper.addEventListener('keyup', function(evt){
-        if (evt.key == ex.InputKey.Space && jumper.isOnGround()){
+        if (evt.key == ex.InputKey.Space && jumper.isOnGround() && jumpTimerStart !== null){
           var d = new Date();
           var timeJumping = d.getTime() - jumpTimerStart;
 
           spacePushed = false;
           jumpAmount = timeJumping / 7;
-          console.log(timeJumping)
+          jumpTimerStart = null;
 
           chargeBars.forEach(function(bar){
             bar.kill();
@@ -97,7 +101,6 @@
       }
 
 
-      var Goal = ex.Actor.extend({});
 
       function generateGoal() {
         var goal = new Goal(randInt(0, game.width), randInt(0, ground.y - 10), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
@@ -105,7 +108,8 @@
       }
 
       game.addEventListener('update', function(evt){
-        if (spacePushed) {
+        if (spacePushed && jumper.isOnGround()) {
+          // console.log("" + jumper.y + ": " +  ground.y);
           var d = new Date();
           var timeJumping = d.getTime() - jumpTimerStart;
 
@@ -122,7 +126,7 @@
           jumper.rise(30);
           jumpAmount -= 30;
         }
-        else if (jumper.y < ground.y){
+        else if (!jumper.isOnGround()){
           jumper.fall(3)
         }
       });
