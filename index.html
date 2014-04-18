@@ -5,7 +5,7 @@ How to play:
   <ul>
     <li>Try to jump and hit as many green blocks as possible.</li>
     <li>Press Space to jump.</li>
-    <li>The longer you hold down space, the higher you jump.</li>
+    <li>The longer you hold down Space, the higher you jump.</li>
     <li>Use the left and right arrow keys to move while you're jumping.</li>
   <ul>
 
@@ -58,13 +58,12 @@ How to play:
       });
 
       jumper.addEventListener('right', function(){
-        if (!jumper.isOnGround() && jumper.x + 5 < game.width - 5) {
+        if (!jumper.isOnGround() && jumper.x + 5 < game.width - 15) {
           jumper.x += 5;
         }
       });
 
       jumper.addEventListener('keydown', function(evt){
-        // if (evt.key == ex.InputKey.Space && jumper.isOnGround()){
         if (evt.key == ex.InputKey.Space){
           var d = new Date();
           jumpTimerStart = d.getTime();
@@ -101,16 +100,13 @@ How to play:
         return Math.floor((Math.random() * upperBound) + lowerBound);
       }
 
-
-
       function generateGoal() {
-        var goal = new Goal(randInt(0, game.width), randInt(0, ground.y - 10), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
+        var goal = new Goal(randInt(0, game.width - JUMPER_WIDTH), randInt(0, ground.y - 10), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
         game.addChild(goal);
       }
 
       game.addEventListener('update', function(evt){
         if (spacePushed && jumper.isOnGround()) {
-          // console.log("" + jumper.y + ": " +  ground.y);
           var d = new Date();
           var timeJumping = d.getTime() - jumpTimerStart;
 
@@ -135,8 +131,6 @@ How to play:
       scoreLabel.addEventListener('update', function(evt){
         this.text = "Score: " + score;
       });
-
-      ex.KeyDown()
 
       // Add an jumper to the current scene
       game.addChild(jumper);
