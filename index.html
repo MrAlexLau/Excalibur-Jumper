@@ -7,13 +7,18 @@
    <script type="text/javascript">
       var game = new ex.Engine();
 
-      var actor = new ex.Actor(400, 400, 100, 100, ex.Color.Red);
+      var actor = new ex.Actor(400, 400, 20, 20, ex.Color.Red);
       var jumpTimerStart, jumpAmount;
+      var spacePushed = false;
+      var chargeLabel = null;
+
+      var chargeBars = [];
 
       actor.addEventListener('keydown', function(evt){
         if (evt.key == ex.InputKey.Space){
           var d = new Date();
           jumpTimerStart = d.getTime();
+          spacePushed = true;
         }
       });
 
@@ -21,13 +26,42 @@
         if (evt.key == ex.InputKey.Space){
           var d = new Date();
           var timeJumping = d.getTime() - jumpTimerStart;
+
+          spacePushed = false;
           jumpAmount = timeJumping / 7;
           console.log(timeJumping)
+
+          chargeBars.forEach(function(bar){
+            bar.kill();
+          });
+          chargeBars = [];
         }
       });
 
+      function calcChargeBarYOffset(barArray){
+        var offset = 420;
+        if (barArray.length > 0){
+          offset = barArray[barArray.length - 1].y + 20;
+        }
+
+        return offset;
+      }
 
       game.addEventListener('update', function(evt){
+        if (spacePushed) {
+          var d = new Date();
+          var timeJumping = d.getTime() - jumpTimerStart;
+
+          var numChargeBars = timeJumping / 500;
+          console.log("" + numChargeBars + ", " + chargeBars.length)
+          if (numChargeBars > chargeBars.length){
+            var yOffset = calcChargeBarYOffset(chargeBars);
+            var bar = new ex.Actor(400, yOffset, 40, 10, ex.Color.Green);
+            chargeBars.push(bar);
+            game.addChild(bar);
+          }
+        }
+
         if(jumpAmount > 0) {
           actor.y -= 10;
           jumpAmount -= 10;
@@ -37,8 +71,9 @@
         }
       });
 
-      ex.KeyDown()
 
+
+      ex.KeyDown()
 
       // Add an actor to the current scene
       game.addChild(actor);
