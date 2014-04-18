@@ -5,25 +5,60 @@
 
    <script type="text/javascript" src="bower_components/excalibur/dist/Excalibur.js"></script>
    <script type="text/javascript">
-      var game = new ex.Engine();
+      var game = new ex.Engine(320, 480);
+      game.backgroundColor = ex.Color.Black;
 
-      var actor = new ex.Actor(400, 400, 20, 20, ex.Color.Red);
+      var JUMPER_HEIGHT = 20;
+      var JUMPER_WIDTH = 20;
+      var ground = new ex.Actor(0, game.height - 100, game.width, 5, ex.Color.Yellow);
+      var jumper = new ex.Actor(game.width / 2 - JUMPER_WIDTH / 2, ground.y, JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Red);
       var jumpTimerStart, jumpAmount;
       var spacePushed = false;
       var chargeLabel = null;
 
+      var score = 0;
+      var scoreLabel = new ex.Label("Score: " + score, 5, 20);
+      scoreLabel.font = '20px sans-serif';
+      scoreLabel.color = ex.Color.Red;
+
       var chargeBars = [];
 
-      actor.addEventListener('keydown', function(evt){
-        if (evt.key == ex.InputKey.Space){
+
+      jumper.rise = function(amount){
+        jumper.y -= amount;
+      }
+
+      jumper.fall = function(amount){
+        jumper.y += amount;
+      }
+
+      jumper.isOnGround = function(){
+        return (jumper.y + 17 === ground.y);
+      }
+
+      jumper.addEventListener('left', function(){
+        if (!jumper.isOnGround() && jumper.x - 10 > -10) {
+          jumper.x -= 10;
+        }
+      });
+
+      jumper.addEventListener('right', function(){
+        if (!jumper.isOnGround() && jumper.x + 10 < game.width - 10) {
+          jumper.x += 10;
+        }
+      });
+
+      jumper.addEventListener('keydown', function(evt){
+        if (evt.key == ex.InputKey.Space && jumper.isOnGround()){
           var d = new Date();
           jumpTimerStart = d.getTime();
           spacePushed = true;
         }
       });
 
-      actor.addEventListener('keyup', function(evt){
-        if (evt.key == ex.InputKey.Space){
+      jumper.addEventListener('keyup', function(evt){
+        if (evt.key == ex.InputKey.Space && jumper.isOnGround()){
+          score += 1
           var d = new Date();
           var timeJumping = d.getTime() - jumpTimerStart;
 
@@ -39,7 +74,7 @@
       });
 
       function calcChargeBarYOffset(barArray){
-        var offset = 420;
+        var offset = ground.y + JUMPER_HEIGHT;
         if (barArray.length > 0){
           offset = barArray[barArray.length - 1].y + 20;
         }
@@ -53,30 +88,33 @@
           var timeJumping = d.getTime() - jumpTimerStart;
 
           var numChargeBars = timeJumping / 500;
-          console.log("" + numChargeBars + ", " + chargeBars.length)
           if (numChargeBars > chargeBars.length){
             var yOffset = calcChargeBarYOffset(chargeBars);
-            var bar = new ex.Actor(400, yOffset, 40, 10, ex.Color.Green);
+            var bar = new ex.Actor(jumper.x - jumper.width / 2, yOffset, 40, 10, ex.Color.Green);
             chargeBars.push(bar);
             game.addChild(bar);
           }
         }
 
         if(jumpAmount > 0) {
-          actor.y -= 10;
-          jumpAmount -= 10;
+          jumper.rise(30);
+          jumpAmount -= 30;
         }
-        else if (actor.y < 400){
-          actor.y += 3;
+        else if (jumper.y < ground.y){
+          jumper.fall(3)
         }
       });
 
-
+      scoreLabel.addEventListener('update', function(evt){
+        this.text = "Score: " + score;
+      });
 
       ex.KeyDown()
 
-      // Add an actor to the current scene
-      game.addChild(actor);
+      // Add an jumper to the current scene
+      game.addChild(jumper);
+      game.addChild(ground);
+      game.addChild(scoreLabel);
 
       // Start the game
       game.start();
