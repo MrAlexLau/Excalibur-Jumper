@@ -11,6 +11,7 @@
       var JUMPER_HEIGHT = 20;
       var JUMPER_WIDTH = 20;
       var ground = new ex.Actor(0, game.height - 100, game.width, 5, ex.Color.Yellow);
+      ground.preventCollisions = true;
       var jumper = new ex.Actor(game.width / 2 - JUMPER_WIDTH / 2, ground.y, JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Red);
       var jumpTimerStart, jumpAmount;
       var spacePushed = false;
@@ -36,15 +37,25 @@
         return (jumper.y + 17 === ground.y);
       }
 
+      jumper.addEventListener('collision', function(evt){
+        // console.log('collision')
+        // console.log(evt)
+        if(evt.other instanceof Goal){
+          score += 1;
+          evt.other.kill();
+          generateGoal();
+        }
+      });
+
       jumper.addEventListener('left', function(){
-        if (!jumper.isOnGround() && jumper.x - 10 > -10) {
-          jumper.x -= 10;
+        if (!jumper.isOnGround() && jumper.x - 5 > -5) {
+          jumper.x -= 5;
         }
       });
 
       jumper.addEventListener('right', function(){
-        if (!jumper.isOnGround() && jumper.x + 10 < game.width - 10) {
-          jumper.x += 10;
+        if (!jumper.isOnGround() && jumper.x + 5 < game.width - 5) {
+          jumper.x += 5;
         }
       });
 
@@ -58,7 +69,6 @@
 
       jumper.addEventListener('keyup', function(evt){
         if (evt.key == ex.InputKey.Space && jumper.isOnGround()){
-          score += 1
           var d = new Date();
           var timeJumping = d.getTime() - jumpTimerStart;
 
@@ -80,6 +90,18 @@
         }
 
         return offset;
+      }
+
+      function randInt(lowerBound, upperBound){
+        return Math.floor((Math.random() * upperBound) + lowerBound);
+      }
+
+
+      var Goal = ex.Actor.extend({});
+
+      function generateGoal() {
+        var goal = new Goal(randInt(0, game.width), randInt(0, ground.y - 10), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
+        game.addChild(goal);
       }
 
       game.addEventListener('update', function(evt){
@@ -115,6 +137,8 @@
       game.addChild(jumper);
       game.addChild(ground);
       game.addChild(scoreLabel);
+
+      generateGoal();
 
       // Start the game
       game.start();
