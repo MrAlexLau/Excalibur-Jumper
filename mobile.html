@@ -7,8 +7,8 @@
       game.backgroundColor = ex.Color.Black;
       var Goal = ex.Actor.extend({});
 
-      var JUMPER_HEIGHT = 20;
-      var JUMPER_WIDTH = 20;
+      var JUMPER_HEIGHT = 50;
+      var JUMPER_WIDTH = 50;
       var ground = new ex.Actor(0, game.height - 100, game.width, 5, ex.Color.Yellow);
       ground.preventCollisions = true;
       var jumper = new ex.Actor(game.width / 2 - JUMPER_WIDTH / 2, ground.y, JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Red);
@@ -32,7 +32,7 @@
       }
 
       jumper.isOnGround = function(){
-        return (jumper.y + 20 === ground.y);
+        return (jumper.y + JUMPER_HEIGHT === ground.y);
       }
 
       jumper.addEventListener('collision', function(evt){
@@ -52,7 +52,7 @@
       });
 
       function moveRight(){
-        if (!jumper.isOnGround() && jumper.x + 5 < game.width - 15) {
+        if (!jumper.isOnGround() && jumper.x + 5 < game.width - JUMPER_WIDTH) {
           jumper.x += 10;
         }
       }
@@ -105,7 +105,7 @@
           var timeJumping = d.getTime() - jumpTimerStart;
 
           spacePushed = false;
-          jumpAmount = timeJumping / 7;
+          jumpAmount = timeJumping / 5;
           jumpTimerStart = null;
 
           chargeBars.forEach(function(bar){
@@ -116,7 +116,7 @@
       }
 
       function calcChargeBarYOffset(barArray){
-        var offset = ground.y + JUMPER_HEIGHT;
+        var offset = ground.y + 20;
         if (barArray.length > 0){
           offset = barArray[barArray.length - 1].y + 20;
         }
@@ -129,7 +129,7 @@
       }
 
       function generateGoal() {
-        var goal = new Goal(randInt(0, game.width - JUMPER_WIDTH), randInt(20, ground.y - ground.height - 20), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
+        var goal = new Goal(randInt(0, game.width - JUMPER_WIDTH), randInt(20, ground.y - ground.height - JUMPER_HEIGHT), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
         game.addChild(goal);
       }
 
@@ -141,7 +141,7 @@
           var numChargeBars = timeJumping / 500;
           if (numChargeBars > chargeBars.length){
             var yOffset = calcChargeBarYOffset(chargeBars);
-            var bar = new ex.Actor(jumper.x - jumper.width / 2, yOffset, 40, 10, ex.Color.Green);
+            var bar = new ex.Actor(jumper.x , yOffset, JUMPER_WIDTH, 10, ex.Color.Green);
             chargeBars.push(bar);
             game.addChild(bar);
           }
