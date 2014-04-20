@@ -65,14 +65,33 @@ How to play:
 
       jumper.addEventListener('keydown', function(evt){
         if (evt.key == ex.InputKey.Space){
-          var d = new Date();
-          jumpTimerStart = d.getTime();
-          spacePushed = true;
+          startCharge();
         }
       });
 
+      ex.MouseDown = function(evt){
+        startCharge();
+      };
+
+      ex.MouseUp = function(evt){
+        endCharge();
+      };
+
       jumper.addEventListener('keyup', function(evt){
-        if (evt.key == ex.InputKey.Space && jumper.isOnGround() && jumpTimerStart !== null){
+        if (evt.key == ex.InputKey.Space) {
+          endCharge();
+        }
+      });
+
+      function startCharge(){
+        var d = new Date();
+        jumpTimerStart = d.getTime();
+        spacePushed = true;
+      }
+
+
+      function endCharge(){
+        if (jumper.isOnGround() && jumpTimerStart !== null){
           var d = new Date();
           var timeJumping = d.getTime() - jumpTimerStart;
 
@@ -85,7 +104,7 @@ How to play:
           });
           chargeBars = [];
         }
-      });
+      }
 
       function calcChargeBarYOffset(barArray){
         var offset = ground.y + JUMPER_HEIGHT;
