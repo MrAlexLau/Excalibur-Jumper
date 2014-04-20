@@ -1,22 +1,9 @@
 <html>
 <head></head>
 <body>
-  How to play:
-  <ul>
-    <li>Try to jump and hit as many green blocks as possible.</li>
-    <li>Press Space to jump.</li>
-    <li>The longer you hold down Space, the higher you jump.</li>
-    <li>Use the left and right arrow keys to move while you're jumping.</li>
-  </ul>
-
-  <div>
-    Playing on an iphone? <a href="/mobile.html">Check out the mobile version</a>
-  </div>
-  <br>
-
    <script type="text/javascript" src="bower_components/excalibur/dist/Excalibur.js"></script>
    <script type="text/javascript">
-      var game = new ex.Engine(320, 480);
+      var game = new ex.Engine();
       game.backgroundColor = ex.Color.Black;
       var Goal = ex.Actor.extend({});
 
@@ -66,13 +53,13 @@
 
       function moveRight(){
         if (!jumper.isOnGround() && jumper.x + 5 < game.width - 15) {
-          jumper.x += 5;
+          jumper.x += 10;
         }
       }
 
       function moveLeft(){
         if (!jumper.isOnGround() && jumper.x - 5 > -5) {
-          jumper.x -= 5;
+          jumper.x -= 10;
         }
       }
 
