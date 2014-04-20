@@ -52,16 +52,24 @@ How to play:
       });
 
       jumper.addEventListener('left', function(){
-        if (!jumper.isOnGround() && jumper.x - 5 > -5) {
-          jumper.x -= 5;
-        }
+        moveLeft();
       });
 
       jumper.addEventListener('right', function(){
+        moveRight();
+      });
+
+      function moveRight(){
         if (!jumper.isOnGround() && jumper.x + 5 < game.width - 15) {
           jumper.x += 5;
         }
-      });
+      }
+
+      function moveLeft(){
+        if (!jumper.isOnGround() && jumper.x - 5 > -5) {
+          jumper.x -= 5;
+        }
+      }
 
       jumper.addEventListener('keydown', function(evt){
         if (evt.key == ex.InputKey.Space){
@@ -87,6 +95,16 @@ How to play:
         var d = new Date();
         jumpTimerStart = d.getTime();
         spacePushed = true;
+      }
+
+      window.ondevicemotion = function(event) {
+        var accelerationX = event.accelerationIncludingGravity.x;
+        if (accelerationX > 0) {
+          moveRight();
+        }
+        else {
+          moveLeft();
+        }
       }
 
 
@@ -120,7 +138,7 @@ How to play:
       }
 
       function generateGoal() {
-        var goal = new Goal(randInt(0, game.width - JUMPER_WIDTH), randInt(20, ground.y - 20), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
+        var goal = new Goal(randInt(0, game.width - JUMPER_WIDTH), randInt(20, ground.y - ground.height - 20), JUMPER_WIDTH, JUMPER_HEIGHT, ex.Color.Green);
         game.addChild(goal);
       }
 
