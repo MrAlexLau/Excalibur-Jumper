@@ -85,6 +85,14 @@ How to play:
         endCharge();
       };
 
+      ex.TouchDown = function(evt){
+        startCharge();
+      };
+
+      ex.TouchUp = function(evt){
+        endCharge();
+      };
+
       jumper.addEventListener('keyup', function(evt){
         if (evt.key == ex.InputKey.Space) {
           endCharge();
