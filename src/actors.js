@@ -1,44 +1,49 @@
 var Goal = ex.Actor.extend({});
 
-var Ground = new ex.Actor(0, Config.gameHeight- 100, Config.gameWidth, 5, ex.Color.Yellow);
-Ground.preventCollisions = true;
+var ground = new ex.Actor(0, Config.gameHeight- 100, Config.gameWidth, 5, ex.Color.Yellow);
+ground.preventCollisions = true;
 
-var Jumper = new ex.Actor(Config.gameWidth / 2 - Config.jumperWidth / 2, Ground.y, Config.jumperWidth, Config.jumperHeight, ex.Color.Red);
+var Jumper = ex.Actor.extend({
+  init : function() {
+    // events
+    this.addEventListener('collision', function(evt){
+      if(evt.other instanceof Goal){
+        score += 1;
+        evt.other.kill();
+        generateGoal();
+      }
+    });
 
-Jumper.rise = function(amount){
-  Jumper.y -= amount;
-}
+    this.addEventListener('left', function(){
+      moveLeft();
+    });
 
-Jumper.fall = function(amount){
-  Jumper.y += amount;
-}
+    this.addEventListener('right', function(){
+      moveRight();
+    });
 
-Jumper.isOnGround = function(){
-  return (Jumper.y + 20 === Ground.y);
-}
+    this.addEventListener('keydown', function(evt){
+      if (evt.key == ex.InputKey.Space){
+        startCharge();
+      }
+    });
+  },
 
-Jumper.addEventListener('collision', function(evt){
-  if(evt.other instanceof Goal){
-    score += 1;
-    evt.other.kill();
-    generateGoal();
+  fall : function(amount){
+    jumper.y += amount;
+  },
+
+  isOnGround : function(){
+    return (jumper.y + 20 === ground.y);
+  },
+
+  rise : function(amount){
+    jumper.y -= amount;
   }
 });
 
-Jumper.addEventListener('left', function(){
-  moveLeft();
-});
-
-Jumper.addEventListener('right', function(){
-  moveRight();
-});
-
-
-Jumper.addEventListener('keydown', function(evt){
-  if (evt.key == ex.InputKey.Space){
-    startCharge();
-  }
-});
+var jumper = new Jumper(Config.gameWidth / 2 - Config.jumperWidth / 2, ground.y, Config.jumperWidth, Config.jumperHeight, ex.Color.Red);
+jumper.init();
 
 
 function startCharge(){
@@ -48,7 +53,7 @@ function startCharge(){
 }
 
 function endCharge(){
-  if (Jumper.isOnGround() && jumpTimerStart !== null){
+  if (jumper.isOnGround() && jumpTimerStart !== null){
     var d = new Date();
     var timeJumping = d.getTime() - jumpTimerStart;
 
@@ -64,29 +69,20 @@ function endCharge(){
 }
 
 function moveRight(){
-  if (!Jumper.isOnGround() && Jumper.x + 5 < game.width - 15) {
-    Jumper.x += 5;
+  if (!jumper.isOnGround() && jumper.x + 5 < game.width - 15) {
+    jumper.x += 5;
   }
 }
 
 function moveLeft(){
-  if (!Jumper.isOnGround() && Jumper.x - 5 > -5) {
-    Jumper.x -= 5;
+  if (!jumper.isOnGround() && jumper.x - 5 > -5) {
+    jumper.x -= 5;
   }
 }
 
-Jumper.addEventListener('keyup', function(evt){
+jumper.addEventListener('keyup', function(evt){
   if (evt.key == ex.InputKey.Space) {
     endCharge();
   }
 });
 
-
-var ScoreLabel = new ex.Label("Score: " + score, 5, 20);
-ScoreLabel.font = '20px sans-serif';
-ScoreLabel.color = ex.Color.Red;
-
-
-ScoreLabel.addEventListener('update', function(evt){
-  this.text = "Score: " + score;
-});
