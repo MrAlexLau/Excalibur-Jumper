@@ -12,6 +12,18 @@ var Jumper = ex.Actor.extend({
         evt.other.kill();
         generateGoal();
       }
+
+      var sprite = new ex.Sprite(jumperSprite, 0, 0, 70, 99);
+      sprite.scaleX = 0.5;
+      sprite.scaleY = 0.5;
+      this.addDrawing("init", sprite);
+
+      var crouch = new ex.Sprite(jumperSprite, 365, 97, 70, 80);
+      crouch.scaleX = 0.5;
+      crouch.scaleY = 0.5;
+      this.addDrawing("crouch", crouch);
+
+      this.setDrawing("init");
     });
 
     this.addEventListener('left', function() {
@@ -42,7 +54,7 @@ var Jumper = ex.Actor.extend({
         var numChargeBars = timeJumping / 500;
         if (numChargeBars > chargeBars.length){
           var yOffset = this.calcChargeBarYOffset(chargeBars);
-          var bar = new ex.Actor(this.x - this.width / 2, yOffset, 40, 10, ex.Color.Green);
+          var bar = new ex.Actor(this.x - this.width / 4, yOffset, Config.jumperWidth * 1.5, 10, ex.Color.Green);
           chargeBars.push(bar);
           game.addChild(bar);
         }
@@ -64,7 +76,7 @@ var Jumper = ex.Actor.extend({
   },
 
   isOnGround : function() {
-    return (this.y + 20 === ground.y);
+    return (this.y + Config.jumperHeight === ground.y);
   },
 
   rise : function(amount) {
@@ -72,24 +84,28 @@ var Jumper = ex.Actor.extend({
   },
 
   moveLeft: function() {
-    if (!this.isOnGround() && this.x - 5 > -5) {
+    if (!this.isOnGround() && this.x > 0) {
       this.x -= 5;
     }
   },
 
   moveRight: function() {
-    if (!this.isOnGround() && this.x + 5 < Config.gameWidth - 15) {
+    if (!this.isOnGround() && this.x + Config.jumperWidth < Config.gameWidth) {
       this.x += 5;
     }
   },
 
   startCharge : function() {
+    this.setDrawing("crouch");
+
     var d = new Date();
     jumpTimerStart = d.getTime();
     spacePushed = true;
   },
 
   endCharge : function() {
+    this.setDrawing("init");
+
     if (this.isOnGround() && jumpTimerStart !== null){
       var d = new Date();
       var timeJumping = d.getTime() - jumpTimerStart;
@@ -106,7 +122,7 @@ var Jumper = ex.Actor.extend({
   },
 
   calcChargeBarYOffset : function(barArray) {
-    var offset = ground.y + Config.jumperHeight;
+    var offset = ground.y + 10;
     if (barArray.length > 0){
       offset = barArray[barArray.length - 1].y + 20;
     }

@@ -1,8 +1,12 @@
 var game = new ex.Engine(Config.gameWidth, Config.gameHeight);
 game.backgroundColor = ex.Color.Black;
 
+var jumperSprite = new ex.Texture('res/jumperSprite.png');
+var loader = new ex.Loader([jumperSprite]);
+game.load(loader);
+
 generateGoal = function() {
-  var goal = new Goal(randInt(0, game.width - Config.jumperWidth), randInt(20, ground.y - ground.height - 20), Config.jumperWidth, Config.jumperHeight, ex.Color.Green);
+  var goal = new Goal(randInt(0, game.width - Config.goalWidth), randInt(20, ground.y - ground.height - 20), Config.goalWidth, Config.goalHeight, ex.Color.Green);
   game.addChild(goal);
 }
 
