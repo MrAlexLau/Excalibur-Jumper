@@ -1,7 +1,7 @@
 var game = new ex.Engine(Config.gameWidth, Config.gameHeight);
 game.backgroundColor = ex.Color.Black;
 
-var jumperSprite = new ex.Texture('res/jumperSprite.png');
+var jumperSprite = new ex.Texture('res/jumperSprite.png');  // courtesy of http://www.kenney.nl/assets
 var loader = new ex.Loader([jumperSprite]);
 game.load(loader);
 
