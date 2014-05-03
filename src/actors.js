@@ -1,4 +1,12 @@
-var Goal = ex.Actor.extend({});
+var Goal = ex.Actor.extend({
+  init : function() {
+    var sprite = new ex.Sprite(coinGold, 0, 0, 36, 36);
+    sprite.scaleX = 0.5555;
+    sprite.scaleY = 0.5555;
+    this.addDrawing("coin", sprite);
+    this.setDrawing("coin");
+  }
+});
 
 var ground = new ex.Actor(0, Config.gameHeight- 100, Config.gameWidth, 5, ex.Color.Yellow);
 ground.preventCollisions = true;
@@ -13,17 +21,7 @@ var Jumper = ex.Actor.extend({
         generateGoal();
       }
 
-      var sprite = new ex.Sprite(jumperSprite, 0, 0, 70, 99);
-      sprite.scaleX = 0.5;
-      sprite.scaleY = 0.5;
-      this.addDrawing("init", sprite);
-
-      var crouch = new ex.Sprite(jumperSprite, 365, 97, 70, 80);
-      crouch.scaleX = 0.5;
-      crouch.scaleY = 0.5;
-      this.addDrawing("crouch", crouch);
-
-      this.setDrawing("init");
+      this.loadImages();
     });
 
     this.addEventListener('left', function() {
@@ -48,6 +46,8 @@ var Jumper = ex.Actor.extend({
 
     this.addEventListener('update', function(evt) {
       if (spacePushed && this.isOnGround()) {
+        this.setDrawing("crouch");
+
         var d = new Date();
         var timeJumping = d.getTime() - jumpTimerStart;
 
@@ -59,16 +59,38 @@ var Jumper = ex.Actor.extend({
           game.addChild(bar);
         }
       }
+      else if (!spacePushed && this.isOnGround()) {
+        this.setDrawing("standing");
+      }
 
       if(jumpAmount > 0) {
+        this.setDrawing("flying");
         this.rise(30);
         jumpAmount -= 30;
       }
       else if (!this.isOnGround()){
         this.fall(3)
       }
-
     });
+  },
+
+  loadImages : function() {
+      var sprite = new ex.Sprite(jumperStanding, 0, 0, 75, 95);
+      sprite.scaleX = 0.4666;
+      sprite.scaleY = 0.5263;
+      this.addDrawing("standing", sprite);
+
+      var sprite = new ex.Sprite(jumperFlying, 0, 0, 75, 95);
+      sprite.scaleX = 0.4666;
+      sprite.scaleY = 0.5263;
+      this.addDrawing("flying", sprite);
+
+      var crouch = new ex.Sprite(jumperCrouching, 0, 0, 75, 95);
+      crouch.scaleX = 0.4666;
+      crouch.scaleY = 0.5263;
+      this.addDrawing("crouch", crouch);
+
+      this.setDrawing("standing");
   },
 
   fall : function(amount) {
@@ -96,16 +118,12 @@ var Jumper = ex.Actor.extend({
   },
 
   startCharge : function() {
-    this.setDrawing("crouch");
-
     var d = new Date();
     jumpTimerStart = d.getTime();
     spacePushed = true;
   },
 
   endCharge : function() {
-    this.setDrawing("init");
-
     if (this.isOnGround() && jumpTimerStart !== null){
       var d = new Date();
       var timeJumping = d.getTime() - jumpTimerStart;
