@@ -1,4 +1,4 @@
-/// <reference path="Core.ts" />
+/// <reference path="Engine.ts" />
 /// <reference path="Algebra.ts" />
 
 module ex {
@@ -33,7 +33,7 @@ module ex {
       }
 
       /**
-      * Sets the {{#crossLink Actor}}{{//crossLink}} to follow with the camera
+      * Sets the {{#crossLink Actor}}{{/crossLink}} to follow with the camera
       * @method setActorToFollow
       * @param actor {Actor} The actor to follow
       */

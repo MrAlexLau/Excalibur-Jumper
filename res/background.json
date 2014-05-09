@@ -1,8 +1,8 @@
-{ "height":20,
+{ "height":7,
  "layers":[
         {
-         "data":[2, 2, 11, 2, 11, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         "height":20,
+         "data":[1, 1, 1, 12, 1, 1, 1, 1, 1, 1, 12, 1, 1, 1, 1, 1, 1, 1, 1, 12, 1, 1, 1, 1, 1, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11],
+         "height":7,
          "name":"Tile Layer 1",
          "opacity":1,
          "type":"tilelayer",
@@ -20,22 +20,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"grassCenter.png",
-         "imageheight":70,
-         "imagewidth":70,
-         "margin":0,
-         "name":"grassCenter",
-         "properties":
-            {
-
-            },
-         "spacing":0,
-         "tileheight":70,
-         "tilewidth":70
-        },
-        {
-         "firstgid":2,
-         "image":"bg.png",
+         "image":"res/bg.png",
          "imageheight":256,
          "imagewidth":256,
          "margin":0,
@@ -46,11 +31,44 @@
             },
          "spacing":0,
          "tileheight":70,
-         "tilewidth":70
+         "tilewidth":70,
+         "transparentcolor":"#fefefd"
+        },
+        {
+         "firstgid":10,
+         "image":"res/grassMid.png",
+         "imageheight":70,
+         "imagewidth":70,
+         "margin":0,
+         "name":"grassMid",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":70,
+         "tilewidth":70,
+         "transparentcolor":"#fefefd"
         },
         {
          "firstgid":11,
-         "image":"cloud1.png",
+         "image":"res/grassCenter.png",
+         "imageheight":70,
+         "imagewidth":70,
+         "margin":0,
+         "name":"grassCenter",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":70,
+         "tilewidth":70,
+         "transparentcolor":"#fefefd"
+        },
+        {
+         "firstgid":12,
+         "image":"res/cloud1.png",
          "imageheight":70,
          "imagewidth":70,
          "margin":0,

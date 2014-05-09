@@ -8,14 +8,14 @@ var Goal = ex.Actor.extend({
   }
 });
 
-var ground = new ex.Actor(0, Config.gameHeight- 100, Config.gameWidth, 5, ex.Color.Yellow);
+var ground = new ex.Actor(0, Config.gameHeight - Config.groundHeight, Config.gameWidth, 5, ex.Color.Transparent);
 ground.preventCollisions = true;
 
 var Jumper = ex.Actor.extend({
   init : function() {
     // events
     this.addEventListener('collision', function(evt) {
-      if(evt.other instanceof Goal){
+      if(evt.other instanceof Goal && !evt.other._isKilled){
         score += 1;
         evt.other.kill();
         generateGoal();
@@ -54,7 +54,7 @@ var Jumper = ex.Actor.extend({
         var numChargeBars = timeJumping / 500;
         if (numChargeBars > chargeBars.length){
           var yOffset = this.calcChargeBarYOffset(chargeBars);
-          var bar = new ex.Actor(this.x - this.width / 4, yOffset, Config.jumperWidth * 1.5, 10, ex.Color.Green);
+          var bar = new ex.Actor(this.x - this.width / 4, yOffset, Config.jumperWidth * 1.5, 10, ex.Color.White);
           chargeBars.push(bar);
           game.addChild(bar);
         }
@@ -149,5 +149,5 @@ var Jumper = ex.Actor.extend({
   }
 });
 
-var jumper = new Jumper(Config.gameWidth / 2 - Config.jumperWidth / 2, ground.y, Config.jumperWidth, Config.jumperHeight, ex.Color.Red);
+var jumper = new Jumper(Config.gameWidth / 2 - Config.jumperWidth / 2, ground.y - 10, Config.jumperWidth, Config.jumperHeight, ex.Color.Red);
 jumper.init();

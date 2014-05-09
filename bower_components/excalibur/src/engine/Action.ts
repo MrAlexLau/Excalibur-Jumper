@@ -1,6 +1,6 @@
 /// <reference path="Algebra.ts" />
-/// <reference path="Core.ts" />
-/// <reference path="Entities.ts" />
+/// <reference path="Engine.ts" />
+/// <reference path="Actor.ts" />
 
 module ex.Internal.Actions {
    export interface IAction {
@@ -641,7 +641,7 @@ module ex.Internal.Actions {
       }
 
       public isComplete(actor: Actor): boolean {
-         return this._stopped || (Math.abs(this.actor.opacity - this.endOpacity) < 0.01);
+         return this._stopped || (Math.abs(this.actor.opacity - this.endOpacity) < 0.05);
       }
 
       public stop(): void {
@@ -828,7 +828,7 @@ module ex.Internal.Actions {
          this._actions = this.getActions();
          this._actions.forEach((action) => {
             action.reset();
-         })
+         });
       this._completedActions = [];
       }
 
