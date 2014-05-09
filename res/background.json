@@ -1,0 +1,70 @@
+{ "height":20,
+ "layers":[
+        {
+         "data":[2, 2, 11, 2, 11, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":20,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":5,
+         "x":0,
+         "y":0
+        }],
+ "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
+ "tileheight":70,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "image":"grassCenter.png",
+         "imageheight":70,
+         "imagewidth":70,
+         "margin":0,
+         "name":"grassCenter",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":70,
+         "tilewidth":70
+        },
+        {
+         "firstgid":2,
+         "image":"bg.png",
+         "imageheight":256,
+         "imagewidth":256,
+         "margin":0,
+         "name":"bg",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":70,
+         "tilewidth":70
+        },
+        {
+         "firstgid":11,
+         "image":"cloud1.png",
+         "imageheight":70,
+         "imagewidth":70,
+         "margin":0,
+         "name":"cloud1",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":70,
+         "tilewidth":70,
+         "transparentcolor":"#fefefd"
+        }],
+ "tilewidth":70,
+ "version":1,
+ "width":5
+}
