@@ -10,6 +10,7 @@ var Goal = ex.Actor.extend({
 
 var ground = new ex.Actor(0, Config.gameHeight - Config.groundHeight, Config.gameWidth, 5, ex.Color.Transparent);
 ground.preventCollisions = true;
+ground.opacity = 0;
 
 var Jumper = ex.Actor.extend({
   init : function() {
