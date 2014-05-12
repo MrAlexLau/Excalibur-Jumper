@@ -19,6 +19,7 @@ var Jumper = ex.Actor.extend({
       if(evt.other instanceof Goal && !evt.other._isKilled){
         score += 1;
         evt.other.kill();
+        coinSound.play();
         generateGoal();
       }
 
@@ -65,6 +66,10 @@ var Jumper = ex.Actor.extend({
       }
 
       if(jumpAmount > 0) {
+        if (this.isOnGround()){
+          jumpSound.play();
+        }
+
         this.setDrawing("flying");
         this.rise(30);
         jumpAmount -= 30;

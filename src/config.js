@@ -7,5 +7,6 @@ var Config = {
    goalWidth: 20,
    goalHeight: 20,
    jumperHeight : 50,
-   jumperWidth : 35
+   jumperWidth : 35,
+   soundVolume : .1
 }
