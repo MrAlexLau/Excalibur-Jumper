@@ -15,13 +15,14 @@ var loader = new ex.Loader([coinSound, jumpSound, jumperCrouching, jumperStandin
 level0.load();
 
 game.load(loader).then(function(){
-   coinSound.setVolume(Config.soundVolume);
-   jumpSound.setVolume(Config.soundVolume);
+  jumper.loadImages();
+  coinSound.setVolume(Config.soundVolume);
+  jumpSound.setVolume(Config.soundVolume);
 });
 
 
 generateGoal = function() {
-  var goal = new Goal(randInt(0, game.width - Config.goalWidth), randInt(20, ground.y - ground.height - (Config.goalHeight + 10)), Config.goalWidth, Config.goalHeight, ex.Color.Green);
+  var goal = new Goal(randInt(0, game.width - Config.goalWidth), randInt(20, ground.y - Config.groundHeight - (Config.goalHeight + 10)), Config.goalWidth, Config.goalHeight, ex.Color.Green);
   goal.init();
   level0.addChild(goal);
 }
@@ -35,7 +36,6 @@ scoreLabel.addEventListener('update', function(evt){
 
 // Add actors to the game
 level0.addChild(jumper);
-level0.addChild(ground);
 level0.addChild(scoreLabel);
 
 generateGoal();

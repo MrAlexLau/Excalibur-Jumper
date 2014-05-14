@@ -8,13 +8,13 @@ var Goal = ex.Actor.extend({
   }
 });
 
-var ground = new ex.Actor(0, Config.gameHeight - Config.groundHeight, Config.gameWidth, 5, ex.Color.Transparent);
-ground.preventCollisions = true;
-ground.opacity = 0;
+var ground = { y: Config.gameHeight - Config.groundHeight }
 
 var Jumper = ex.Actor.extend({
   init : function() {
-    // events
+    this.setDrawing("standing");
+
+    // bind events
     this.addEventListener('collision', function(evt) {
       if(evt.other instanceof Goal && !evt.other._isKilled){
         score += 1;
@@ -23,7 +23,6 @@ var Jumper = ex.Actor.extend({
         generateGoal();
       }
 
-      this.loadImages();
     });
 
     this.addEventListener('left', function() {
@@ -130,7 +129,7 @@ var Jumper = ex.Actor.extend({
   },
 
   isOnGround : function() {
-    return (this.y + Config.jumperHeight === ground.y);
+    return (this.y + Config.jumperHeight >= ground.y);
   },
 
   rise : function(amount) {
@@ -187,5 +186,5 @@ var Jumper = ex.Actor.extend({
   }
 });
 
-var jumper = new Jumper(Config.gameWidth / 2 - Config.jumperWidth / 2, ground.y - Config.jumperHeight - 10, Config.jumperWidth, Config.jumperHeight, ex.Color.Red);
+var jumper = new Jumper(Config.gameWidth / 2 - Config.jumperWidth / 2, ground.y - Config.jumperHeight, Config.jumperWidth, Config.jumperHeight, ex.Color.Red);
 jumper.init();
