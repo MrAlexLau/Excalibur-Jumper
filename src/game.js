@@ -1,4 +1,5 @@
 var game = new ex.Engine(Config.gameWidth, Config.gameHeight);
+
 game.backgroundColor = ex.Color.Black;
 
 var coinSound = new ex.Sound('res/coin.wav');
