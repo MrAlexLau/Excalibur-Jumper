@@ -1,4 +1,4 @@
-Config.moveAmount = 15;
+// Config.moveAmount = 15;
 
 window.ondevicemotion = function(event) {
   var accelerationX = event.accelerationIncludingGravity.x;

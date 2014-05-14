@@ -47,22 +47,26 @@ var Jumper = ex.Actor.extend({
     });
 
     this.addEventListener('update', function(evt) {
-      if (spacePushed && this.isOnGround()) {
-        this.setDrawing("crouch");
+      this.checkBounds();
 
-        var d = new Date();
-        var timeJumping = d.getTime() - jumpTimerStart;
+      if (this.isOnGround()) {
+        if (spacePushed) {
+          this.setDrawing("crouch");
 
-        var numChargeBars = timeJumping / 500;
-        if (numChargeBars > chargeBars.length){
-          var yOffset = this.calcChargeBarYOffset(chargeBars);
-          var bar = new ex.Actor(this.x - this.width / 4, yOffset, Config.jumperWidth * 1.5, 10, ex.Color.White);
-          chargeBars.push(bar);
-          game.addChild(bar);
+          var d = new Date();
+          var timeJumping = d.getTime() - jumpTimerStart;
+
+          var numChargeBars = timeJumping / 500;
+          if (numChargeBars > chargeBars.length){
+            var yOffset = this.calcChargeBarYOffset(chargeBars);
+            var bar = new ex.Actor(this.x - this.width / 4, yOffset, Config.jumperWidth * 1.5, 10, ex.Color.White);
+            chargeBars.push(bar);
+            game.addChild(bar);
+          }
         }
-      }
-      else if (!spacePushed && this.isOnGround()) {
-        this.setDrawing("standing");
+        else if (!spacePushed) {
+          this.setDrawing("standing");
+        }
       }
 
       if(jumpAmount > 0) {
@@ -103,6 +107,28 @@ var Jumper = ex.Actor.extend({
     this.y += amount;
   },
 
+  checkBounds : function() {
+    if (this.isOnGround()) {
+      this.dx = 0;
+      this.dy = 0;
+    }
+
+    // check right bound
+    if (this.x + Config.jumperWidth >= Config.gameWidth) {
+      this.x = Config.gameWidth - Config.jumperWidth;
+    }
+
+    // check left bound
+    if (this.x < 0){
+      this.x = 0;
+    }
+
+    // check for the jumper going under the ground
+    if (this.y > Config.gameHeight - Config.groundHeight) {
+      this.y = Config.gameHeight - Config.groundHeight;
+    }
+  },
+
   isOnGround : function() {
     return (this.y + Config.jumperHeight === ground.y);
   },
@@ -113,13 +139,19 @@ var Jumper = ex.Actor.extend({
 
   moveLeft: function() {
     if (!this.isOnGround() && this.x > 0) {
-      this.x -= Config.moveAmount;
+      this.dx = -1 * Config.dx;
+    }
+    else {
+      this.dx = 0;
     }
   },
 
   moveRight: function() {
     if (!this.isOnGround() && this.x + Config.jumperWidth < Config.gameWidth) {
-      this.x += Config.moveAmount;
+      this.dx = Config.dx;
+    }
+    else{
+      this.dx = 0;
     }
   },
 
