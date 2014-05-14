@@ -113,13 +113,13 @@ var Jumper = ex.Actor.extend({
 
   moveLeft: function() {
     if (!this.isOnGround() && this.x > 0) {
-      this.x -= 5;
+      this.x -= Config.moveAmount;
     }
   },
 
   moveRight: function() {
     if (!this.isOnGround() && this.x + Config.jumperWidth < Config.gameWidth) {
-      this.x += 5;
+      this.x += Config.moveAmount;
     }
   },
 
