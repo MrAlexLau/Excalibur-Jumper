@@ -155,5 +155,5 @@ var Jumper = ex.Actor.extend({
   }
 });
 
-var jumper = new Jumper(Config.gameWidth / 2 - Config.jumperWidth / 2, ground.y - 10, Config.jumperWidth, Config.jumperHeight, ex.Color.Red);
+var jumper = new Jumper(Config.gameWidth / 2 - Config.jumperWidth / 2, ground.y - Config.jumperHeight - 10, Config.jumperWidth, Config.jumperHeight, ex.Color.Red);
 jumper.init();
