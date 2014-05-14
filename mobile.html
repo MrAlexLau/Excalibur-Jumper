@@ -20,6 +20,14 @@
         jumper.moveLeft();
       }
     }
+
+    ex.TouchStart = function(evt) {
+      jumper.startCharge();
+    };
+
+    ex.TouchEnd = function(evt) {
+      jumper.endCharge();
+    };
    </script>
 </body>
 </html>
