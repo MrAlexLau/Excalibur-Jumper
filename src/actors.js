@@ -21,6 +21,7 @@ var Jumper = ex.Actor.extend({
         evt.other.kill();
         coinSound.play();
         generateGoal();
+        game.addTime();
       }
 
     });
@@ -46,6 +47,10 @@ var Jumper = ex.Actor.extend({
     });
 
     this.addEventListener('update', function(evt) {
+      if (game.isOver()){
+        this.kill();
+      }
+
       this.checkBounds();
 
       if (this.isOnGround()) {

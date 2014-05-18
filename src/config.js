@@ -9,5 +9,9 @@ var Config = {
    dx: 200,
    jumperHeight: 50,
    jumperWidth: 35,
-   soundVolume: .1
+   soundVolume: .1,
+   pressToStart: 'Press Space to Start' // 182px in width
 }
+
+// calculated values
+Config.startLabelX = Config.gameWidth / 2 - 91;
