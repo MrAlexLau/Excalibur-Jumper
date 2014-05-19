@@ -47,43 +47,44 @@ var Jumper = ex.Actor.extend({
     });
 
     this.addEventListener('update', function(evt) {
+      var that = this;
       if (game.isOver()){
-        this.kill();
+        that.kill();
       }
 
-      this.checkBounds();
+      that.checkBounds();
 
-      if (this.isOnGround()) {
+      if (that.isOnGround()) {
         if (spacePushed) {
-          this.setDrawing("crouch");
+          that.setDrawing("crouch");
 
           var d = new Date();
           var timeJumping = d.getTime() - jumpTimerStart;
 
           var numChargeBars = timeJumping / 500;
           if (numChargeBars > chargeBars.length){
-            var yOffset = this.calcChargeBarYOffset(chargeBars);
-            var bar = new ex.Actor(this.x - this.width / 4, yOffset, Config.jumperWidth * 1.5, 10, ex.Color.White);
+            var yOffset = that.calcChargeBarYOffset(chargeBars);
+            var bar = new ex.Actor(that.x - that.width / 4, yOffset, Config.jumperWidth * 1.5, 10, ex.Color.White);
             chargeBars.push(bar);
             game.addChild(bar);
           }
         }
         else if (!spacePushed) {
-          this.setDrawing("standing");
+          that.setDrawing("standing");
         }
       }
 
-      if(jumpAmount > 0) {
-        if (this.isOnGround()){
+      if(that.jumpAmount > 0) {
+        if (that.isOnGround()){
           jumpSound.play();
         }
 
-        this.setDrawing("flying");
-        this.rise(30);
-        jumpAmount -= 30;
+        that.setDrawing("flying");
+        that.rise(30);
+        that.jumpAmount -= 30;
       }
-      else if (!this.isOnGround()){
-        this.fall(3)
+      else if (!that.isOnGround()){
+        that.fall(3)
       }
     });
   },
@@ -166,12 +167,14 @@ var Jumper = ex.Actor.extend({
   },
 
   endCharge : function() {
-    if (this.isOnGround() && jumpTimerStart !== null){
+    var that = this;
+
+    if (that.isOnGround() && jumpTimerStart !== null){
       var d = new Date();
       var timeJumping = d.getTime() - jumpTimerStart;
 
       spacePushed = false;
-      jumpAmount = timeJumping / 7;
+      that.jumpAmount = timeJumping / 7;
       jumpTimerStart = null;
 
       chargeBars.forEach(function(bar){
@@ -191,5 +194,4 @@ var Jumper = ex.Actor.extend({
   }
 });
 
-var jumper = new Jumper(Config.gameWidth / 2 - Config.jumperWidth / 2, ground.y - Config.jumperHeight, Config.jumperWidth, Config.jumperHeight, ex.Color.Red);
-jumper.init();
+var jumper;
